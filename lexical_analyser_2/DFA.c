@@ -11,7 +11,7 @@ void dfa_makeNextTransition(DFA* dfa, char c)
 		if (pCurrentState->transitions[transitionID].condition(c))
 		{
 			dfa->currentStateID = pCurrentState->transitions[transitionID].toStateID;
-			return;
+			// return;
 		}
 	}
 

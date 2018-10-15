@@ -57,6 +57,27 @@ int condition22(char c) {
     return 0;
 }
 
+char *AnalyseFile(char *fileName , DFA* dfa)
+{
+    FILE *file = fopen(fileName, "r");
+    char *code;
+    size_t n = 0;
+    char c;
+    
+    if (file == NULL)
+        return NULL; //could not open file
+    code = malloc(1000);
+    
+    while ((c = fgetc(file)) != EOF)
+    {   
+        printf("%c\n" , (char) c);
+        dfa_makeNextTransition(dfa , c);
+    }
+
+    // don't forget to terminate with the null character
+    code[n] = '\0';        
+    return code;
+}
 
 void main(){
     DFA* dfa;
@@ -115,15 +136,19 @@ void main(){
     // dfa = dfa_createState(dfa , state0);
     // dfa = dfa_createState(dfa , state1);
     // dfa = dfa_createState(dfa , state2);
-
+    
     int lena = dfa->currentStateID;
+    
     lena = dfa->currentStateID = 0;
+    
     printf("%d\n" , lena);
+    
     dfa_makeNextTransition(dfa , 'c');
+    
     printf("%d\n" ,dfa->currentStateID );
 
-
-    
+    //read file 
+    AnalyseFile("file.txt" , dfa);
     
     
     
