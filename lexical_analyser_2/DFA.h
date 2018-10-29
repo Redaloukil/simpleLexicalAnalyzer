@@ -49,4 +49,4 @@ void addCharToken(Token *token , char c);
 
 //Analyse with given token and automaton
 
-void analyseToken(Token *token , DFA *dfa , int *correct);
+void analyseToken(Token *token , DFA *dfa);

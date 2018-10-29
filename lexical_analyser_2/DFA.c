@@ -8,14 +8,17 @@ void dfa_makeNextTransition(DFA* dfa, char c)
 	DFAState* pCurrentState = dfa->states[dfa->currentStateID];
 	for (transitionID = 0; transitionID < pCurrentState->numberOfTransitions; transitionID++)
 	{
-		if (pCurrentState->transitions[transitionID].condition(c))
-		{
+		if (pCurrentState->transitions[transitionID].condition(c) == 1)
+		{	
 			dfa->currentStateID = pCurrentState->transitions[transitionID].toStateID;
 			// return;
+			
 		}
 	}
+	printf("after reading %c the current state is : %d\n" ,c, dfa->currentStateID);
 	//take the default transition
 	dfa->currentStateID = pCurrentState->defaultToStateID;
+	
 }
 
 void dfa_addState(DFA* pDFA, DFAState* newState)
@@ -70,13 +73,9 @@ void addCharToken(Token *token , char c){
 	token->len = token->len + 1;
 }
 
-void analyseToken(Token *token , DFA *dfa , int *correct){
-	
+void analyseToken(Token *token , DFA *dfa){
 	for (int i=0 ; i< token->len ; i++){
-		printf("%c" , token->body[i]);
+		printf("%c\n" , token->body[i]);
 		dfa_makeNextTransition(dfa , token->body[i]);
 	}
-	printf("\n");
-	printf("%d" , dfa->currentStateID);
-
 }

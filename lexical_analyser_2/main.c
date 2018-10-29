@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include <stdbool.h>
 #include"DFA.c"
 
 #define TOKEN_LEN 10
@@ -44,12 +45,13 @@ int condition22(char c) {
     return 0;
 }
 
-char *AnalyseFile(char *fileName , DFA* dfa , int *correct)
+void *AnalyseFile(char *fileName , DFA* dfa)
 {
     FILE *file = fopen(fileName, "r");
     char *code;
     size_t n = 0;
     char c;
+    int correct = 1;
     
     if (file == NULL)
         return NULL; //could not open file
@@ -59,17 +61,14 @@ char *AnalyseFile(char *fileName , DFA* dfa , int *correct)
     Token *token;
     intializeToken(token);
 
-    while ((c = fgetc(file)) != EOF && *correct == 1){
-    {   
-        
+    while ((c = fgetc(file)) != EOF && correct == 1){
         if(c != ' '){
             addCharToken(token , c);
         }else {
+            analyseToken(token , dfa);
             printf("\n");
-            analyseToken(token , dfa , correct);
             intializeToken(token);
         }
-    }
     }
     // don't forget to terminate with the null character
     code[n] = '\0';        
@@ -77,9 +76,7 @@ char *AnalyseFile(char *fileName , DFA* dfa , int *correct)
 }
 
 void main() {
-    DFA* dfa;
-
-    dfa = dfa_createDFA();
+    DFA* dfa = dfa_createDFA();
 
     DFAState state0;
     DFAState state1;
@@ -90,50 +87,49 @@ void main() {
     dfa_addState(dfa , &state2);
 
     
+
+    // DFATransition transition0;
+    // DFATransition transition1;
+    // DFATransition transition2;
+    // DFATransition transition3;
+    // DFATransition transition4;
+    // DFATransition transition5;
+
+
+    // transition0.condition = isAB;
+    // transition0.toStateID = 1;
+    
+    // transition1.condition = isAB01;
+    // transition1.toStateID = 1;
+
+    // transition2.condition = is01;
+    // transition2.toStateID = 2;
+
+    // transition3.condition = is01;
+    // transition3.toStateID = 2;
+
     
 
-    DFATransition transition0;
-    DFATransition transition1;
-    DFATransition transition2;
-    DFATransition transition3;
-    DFATransition transition4;
-    DFATransition transition5;
-
-
-    transition0.condition = condition01;
-    transition0.toStateID = 1;
+    dfa_addTransition(dfa , 0 , isAB ,1);
     
-    transition1.condition = condition11;
-    transition1.toStateID = 1;
+    dfa_addTransition(dfa , 0 , is01 , 2);
 
-    transition0.condition = condition02;
-    transition0.toStateID = 2;
-
-    transition0.condition = condition22;
-    transition0.toStateID = 2;
-
-    
-
-    dfa_addTransition(dfa , 0 , condition01 ,1);
-    
-    dfa_addTransition(dfa , 0 , condition02 , 2);
-
-    dfa_addTransition(dfa , 1 , condition11 , 1);
-
-    dfa_addTransition(dfa , 2 , condition22 , 2);
+    // dfa_addTransition(dfa , 2 , is01 , 2);
     
     int correct = 1;
-    //read file 
-    // AnalyseFile("file.txt" , dfa ,&correct);
-    // printf("\n");
-    // printf("%d\n" , correct);
 
+    // read file 
+    AnalyseFile("file.txt" , dfa);
+    
     char c = 'c';
 
-    dfa_makeNextTransition(dfa , 'c');
-
-    printf("%d", dfa->currentStateID);
-
+    dfa_makeNextTransition(dfa , c);
     
     
+    
+
+    
+
+    
+
 }
