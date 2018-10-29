@@ -14,7 +14,6 @@ void dfa_makeNextTransition(DFA* dfa, char c)
 			// return;
 		}
 	}
-
 	//take the default transition
 	dfa->currentStateID = pCurrentState->defaultToStateID;
 }
@@ -60,4 +59,24 @@ DFA* dfa_createDFA()
 void dfa_reset(DFA* dfa)
 {
 	dfa->currentStateID = dfa->startStateID;
+}
+
+void intializeToken(Token *token){
+	token->len = 0;
+}
+
+void addCharToken(Token *token , char c){
+	token->body[token->len] = c;
+	token->len = token->len + 1;
+}
+
+void analyseToken(Token *token , DFA *dfa , int *correct){
+	
+	for (int i=0 ; i< token->len ; i++){
+		printf("%c" , token->body[i]);
+		dfa_makeNextTransition(dfa , token->body[i]);
+	}
+	printf("\n");
+	printf("%d" , dfa->currentStateID);
+
 }

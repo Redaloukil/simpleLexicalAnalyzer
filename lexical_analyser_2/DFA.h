@@ -2,6 +2,8 @@
 
 #define MAX_TRANSITIONS 50
 #define MAX_STATES 100
+#define TOKEN_LEN 10
+
 
 
 typedef struct
@@ -28,9 +30,23 @@ typedef struct
 	DFAState* states[MAX_STATES];
 } DFA;
 
+typedef struct Token {
+	char body[10];
+	int len;
+} Token;
+
 DFA* dfa_createDFA();
 void dfa_reset(DFA* dfa); //makes the dfa ready for consumption. i.e. sets the current state to start state.
 void dfa_makeNextTransition(DFA* dfa, char c);
 void dfa_addState(DFA* pDFA, DFAState* newState);
 DFAState* dfa_createState(int hasAction, char* actionName);
 void dfa_addTransition(DFA* dfa, int fromStateID, int(*condition)(char), int toStateID);
+
+//Token Functions
+void intializeToken(Token *token);
+void addCharToken(Token *token , char c);
+
+
+//Analyse with given token and automaton
+
+void analyseToken(Token *token , DFA *dfa , int *correct);
